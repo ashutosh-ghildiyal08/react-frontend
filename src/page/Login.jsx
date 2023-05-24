@@ -18,9 +18,9 @@ function Login() {
       .then((res) => {
         if (res.data === "") {
           setError("Wrong Credentials!");
-          navigate("/login");
-        } else {
           navigate("/");
+        } else {
+          navigate("/home");
         }
       });
   };
