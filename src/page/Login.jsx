@@ -20,7 +20,7 @@ function Login() {
           setError("Wrong Credentials!");
           navigate("/");
         } else {
-          navigate("/home");
+          navigate("/user");
         }
       });
   };

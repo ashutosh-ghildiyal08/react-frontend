@@ -1,27 +1,28 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/style.css";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   return (
     <nav id="sidebar">
       <div className="p-4">
         <h1>
-          <a href="/home" className="logo">
+          <Link to="/user" className="logo">
             Welcome
-          </a>
+          </Link>
         </h1>
         <ul className="list-unstyled components mb-5">
           <li className="">
-            <a href="#">
+            <Link to="/user">
               <span className="fa fa-user mr-3"></span> User
-            </a>
+            </Link>
           </li>
 
           <li>
-            <a href="#">
+            <Link to="/location">
               <span className="fa fa-cogs mr-3"></span>Location
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
