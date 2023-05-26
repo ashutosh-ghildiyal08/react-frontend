@@ -1,26 +1,30 @@
 import "../css/addUser.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-function AddUser() {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    country: "",
-  });
+import { useNavigate, useParams } from "react-router-dom";
+
+function UpdateUser() {
+  const [data, setData] = useState([]);
+  const { id } = useParams();
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/users/" + id)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:8080/users", data).then((res) => {
+    console.log(data);
+    axios.put("http://localhost:8080/users", data).then((res) => {
       navigate("/user");
     });
   };
+
   return (
     <section className="">
       <div className="container py-5 h-100">
@@ -29,14 +33,16 @@ function AddUser() {
             <div className="card shadow-2-strong card-registration bg-indigo text-white">
               <div className="card-body p-4 p-md-5">
                 <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 text-white">
-                  Add User Form
+                  Update User Form
                 </h3>
+
                 <form onSubmit={handleSubmit}>
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
                         <input
                           type="email"
+                          value={data.email}
                           id="email"
                           className="form-control form-control-lg"
                           onChange={(e) =>
@@ -48,10 +54,11 @@ function AddUser() {
                         </label>
                       </div>
                     </div>
-                    <div className="col-md-6 mb-4">
+                    {/* <div className="col-md-6 mb-4">
                       <div className="form-outline">
                         <input
-                          type="password"
+                          type="text"
+                          value={data.password}
                           id="password"
                           className="form-control form-control-lg"
                           onChange={(e) =>
@@ -62,7 +69,7 @@ function AddUser() {
                           Password
                         </label>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="row">
@@ -70,6 +77,7 @@ function AddUser() {
                       <div className="form-outline">
                         <input
                           type="text"
+                          value={data.firstName}
                           id="firstName"
                           className="form-control form-control-lg"
                           onChange={(e) =>
@@ -85,6 +93,7 @@ function AddUser() {
                       <div className="form-outline">
                         <input
                           type="text"
+                          value={data.lastName}
                           id="lastName"
                           className="form-control form-control-lg"
                           onChange={(e) =>
@@ -102,10 +111,14 @@ function AddUser() {
                       <div className="form-outline">
                         <input
                           type="text"
+                          value={data.addressLine1}
                           id="addressLine1"
                           className="form-control form-control-lg"
                           onChange={(e) =>
-                            setData({ ...data, addressLine1: e.target.value })
+                            setData({
+                              ...data,
+                              addressLine1: e.target.value,
+                            })
                           }
                         />
                         <label className="form-label" for="addressLine1">
@@ -117,10 +130,14 @@ function AddUser() {
                       <div className="form-outline">
                         <input
                           type="text"
+                          value={data.addressLine2}
                           id="addressLine2"
                           className="form-control form-control-lg"
                           onChange={(e) =>
-                            setData({ ...data, addressLine2: e.target.value })
+                            setData({
+                              ...data,
+                              addressLine2: e.target.value,
+                            })
                           }
                         />
                         <label className="form-label" for="addressLine2">
@@ -134,6 +151,7 @@ function AddUser() {
                       <div className="form-outline">
                         <input
                           type="city"
+                          value={data.city}
                           id="city"
                           className="form-control form-control-lg"
                           onChange={(e) =>
@@ -149,6 +167,7 @@ function AddUser() {
                       <div className="form-outline">
                         <input
                           type="text"
+                          value={data.country}
                           id="country"
                           className="form-control form-control-lg"
                           onChange={(e) =>
@@ -164,7 +183,7 @@ function AddUser() {
                   <input
                     className="btn btn-light btn-lg"
                     type="submit"
-                    value="Add User"
+                    value="Update User"
                   />
                 </form>
               </div>
@@ -175,4 +194,5 @@ function AddUser() {
     </section>
   );
 }
-export default AddUser;
+
+export default UpdateUser;

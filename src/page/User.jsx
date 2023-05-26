@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/content.css";
 import Sidebar from "../components/Sidebar";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function User() {
+  const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    const userListRes = async () => {
+      await axios
+        .get("http://localhost:8080/users")
+        .then((response) => setUserData(response.data));
+    };
+    userListRes();
+  }, []);
+
+  const handleDelete = (id) => {
+    const url = "http://localhost:8080/users/" + id;
+    axios.delete(url).then((res) => {
+      if (res.status === 200) {
+        window.location.reload(true);
+      }
+    });
+  };
   return (
     <div className="wrapper d-flex align-items-stretch">
       <Sidebar />
@@ -42,41 +61,48 @@ function User() {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>Tiger Nixon</td>
-                              <td>System Architect</td>
-                              <td>61</td>
-                              <td>Edinburgh</td>
-                              <td>Edinburgh</td>
-                              <td>Edinburgh</td>
-                              <td>Edinburgh</td>
-                              <td>
-                                <ul class="list-inline m-0">
-                                  <li class="list-inline-item">
-                                    <button
-                                      class="btn btn-success btn-sm rounded-0"
-                                      type="button"
-                                      data-toggle="tooltip"
-                                      data-placement="top"
-                                      title="Edit"
-                                    >
-                                      <i class="fa fa-edit"></i>
-                                    </button>
-                                  </li>
-                                  <li class="list-inline-item">
-                                    <button
-                                      class="btn btn-danger btn-sm rounded-0"
-                                      type="button"
-                                      data-toggle="tooltip"
-                                      data-placement="top"
-                                      title="Delete"
-                                    >
-                                      <i class="fa fa-trash"></i>
-                                    </button>
-                                  </li>
-                                </ul>
-                              </td>
-                            </tr>
+                            {userData.map((user, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>{user.email}</td>
+                                  <td>{user.firstName}</td>
+                                  <td>{user.lastName}</td>
+                                  <td>{user.addressLine1}</td>
+                                  <td>{user.addressLine2}</td>
+                                  <td>{user.city}</td>
+                                  <td>{user.country}</td>
+
+                                  <td>
+                                    <ul class="list-inline m-0">
+                                      <li class="list-inline-item">
+                                        <Link
+                                          to={"/user/update/" + user.id}
+                                          class="btn btn-success btn-sm rounded-0"
+                                          type="button"
+                                          data-toggle="tooltip"
+                                          data-placement="top"
+                                          title="Edit"
+                                        >
+                                          <i class="fa fa-edit"></i>
+                                        </Link>
+                                      </li>
+                                      <li class="list-inline-item">
+                                        <button
+                                          onClick={(e) => handleDelete(user.id)}
+                                          class="btn btn-danger btn-sm rounded-0"
+                                          type="button"
+                                          data-toggle="tooltip"
+                                          data-placement="top"
+                                          title="Delete"
+                                        >
+                                          <i class="fa fa-trash"></i>
+                                        </button>
+                                      </li>
+                                    </ul>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </table>
                       </div>
