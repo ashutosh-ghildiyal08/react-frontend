@@ -73,29 +73,29 @@ function User() {
                                   <td>{user.country}</td>
 
                                   <td>
-                                    <ul class="list-inline m-0">
-                                      <li class="list-inline-item">
+                                    <ul className="list-inline m-0">
+                                      <li className="list-inline-item">
                                         <Link
                                           to={"/user/update/" + user.id}
-                                          class="btn btn-success btn-sm rounded-0"
+                                          className="btn btn-success btn-sm rounded-0"
                                           type="button"
                                           data-toggle="tooltip"
                                           data-placement="top"
                                           title="Edit"
                                         >
-                                          <i class="fa fa-edit"></i>
+                                          <i className="fa fa-edit"></i>
                                         </Link>
                                       </li>
-                                      <li class="list-inline-item">
+                                      <li className="list-inline-item">
                                         <button
                                           onClick={(e) => handleDelete(user.id)}
-                                          class="btn btn-danger btn-sm rounded-0"
+                                          className="btn btn-danger btn-sm rounded-0"
                                           type="button"
                                           data-toggle="tooltip"
                                           data-placement="top"
                                           title="Delete"
                                         >
-                                          <i class="fa fa-trash"></i>
+                                          <i className="fa fa-trash"></i>
                                         </button>
                                       </li>
                                     </ul>

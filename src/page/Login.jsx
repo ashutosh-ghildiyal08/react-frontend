@@ -69,12 +69,6 @@ function Login() {
                 >
                   Login
                 </button>
-                <p className="small fw-bold mt-2 pt-1 mb-0">
-                  Don't have an account?{" "}
-                  <a href="#!" className="link-danger">
-                    Register
-                  </a>
-                </p>
               </div>
             </form>
           </div>
