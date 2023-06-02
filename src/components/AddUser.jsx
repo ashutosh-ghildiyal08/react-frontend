@@ -1,9 +1,18 @@
 import "../css/addUser.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function AddUser() {
+  const navigate = useNavigate();
+  // const { logggedInUserId } = useParams();
+  useEffect(() => {
+    if (sessionStorage.length === 0) {
+      navigate("/");
+    }
+  });
+  const [error, setError] = useState([]);
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -14,12 +23,19 @@ function AddUser() {
     city: "",
     country: "",
   });
-  const navigate = useNavigate();
+  
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:8080/users", data).then((res) => {
-      navigate("/user");
-    });
+    axios
+      .post("http://localhost:8080/users", data)
+      .then((res) => {
+        navigate("/user");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setError(error.response.data);
+        }
+      });
   };
   return (
     <section className="">
@@ -35,6 +51,9 @@ function AddUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.email}
+                        </span>
                         <input
                           type="email"
                           id="email"
@@ -50,6 +69,9 @@ function AddUser() {
                     </div>
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.password}
+                        </span>
                         <input
                           type="password"
                           id="password"
@@ -68,6 +90,9 @@ function AddUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.firstName}
+                        </span>
                         <input
                           type="text"
                           id="firstName"
@@ -83,6 +108,9 @@ function AddUser() {
                     </div>
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.lastName}
+                        </span>
                         <input
                           type="text"
                           id="lastName"
@@ -100,6 +128,9 @@ function AddUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.addressLine1}
+                        </span>
                         <input
                           type="text"
                           id="addressLine1"
@@ -115,6 +146,9 @@ function AddUser() {
                     </div>
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.addressLine2}
+                        </span>
                         <input
                           type="text"
                           id="addressLine2"
@@ -132,6 +166,9 @@ function AddUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4 pb-2">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.city}
+                        </span>
                         <input
                           type="city"
                           id="city"
@@ -147,6 +184,9 @@ function AddUser() {
                     </div>
                     <div className="col-md-6 mb-4 pb-2">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.country}
+                        </span>
                         <input
                           type="text"
                           id="country"

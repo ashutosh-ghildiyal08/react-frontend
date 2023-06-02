@@ -25,7 +25,11 @@ function Sidebar() {
             </Link>
           </li>
         </ul>
+        <Link to="/logout" type="button" className="btn btn-dark">
+          Logout
+        </Link>
       </div>
+      
     </nav>
   );
 }

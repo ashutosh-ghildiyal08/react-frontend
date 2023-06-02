@@ -16,11 +16,15 @@ function Login() {
         password,
       })
       .then((res) => {
-        if (res.data === "") {
+        const token = res.data.email;
+        // navigate("/" + id + "/user");
+        sessionStorage.setItem("token", token);
+        navigate("/user");
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
           setError("Wrong Credentials!");
           navigate("/");
-        } else {
-          navigate("/user");
         }
       });
   };

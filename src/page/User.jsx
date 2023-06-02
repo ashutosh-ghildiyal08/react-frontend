@@ -2,10 +2,18 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/content.css";
 import Sidebar from "../components/Sidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function User() {
+  const navigate = useNavigate();
+  // const { logggedInUserId } = useParams();
+  useEffect(() => {
+    if (sessionStorage.length === 0) {
+      navigate("/");
+    }
+  });
+  const logggedInUserEmail = sessionStorage.getItem("token");
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     const userListRes = async () => {
@@ -61,48 +69,52 @@ function User() {
                             </tr>
                           </thead>
                           <tbody>
-                            {userData.map((user, index) => {
-                              return (
-                                <tr key={index}>
-                                  <td>{user.email}</td>
-                                  <td>{user.firstName}</td>
-                                  <td>{user.lastName}</td>
-                                  <td>{user.addressLine1}</td>
-                                  <td>{user.addressLine2}</td>
-                                  <td>{user.city}</td>
-                                  <td>{user.country}</td>
+                            {userData
+                              .filter((e) => e.email != logggedInUserEmail)
+                              .map((user, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td>{user.email}</td>
+                                    <td>{user.firstName}</td>
+                                    <td>{user.lastName}</td>
+                                    <td>{user.addressLine1}</td>
+                                    <td>{user.addressLine2}</td>
+                                    <td>{user.city}</td>
+                                    <td>{user.country}</td>
 
-                                  <td>
-                                    <ul className="list-inline m-0">
-                                      <li className="list-inline-item">
-                                        <Link
-                                          to={"/user/update/" + user.id}
-                                          className="btn btn-success btn-sm rounded-0"
-                                          type="button"
-                                          data-toggle="tooltip"
-                                          data-placement="top"
-                                          title="Edit"
-                                        >
-                                          <i className="fa fa-edit"></i>
-                                        </Link>
-                                      </li>
-                                      <li className="list-inline-item">
-                                        <button
-                                          onClick={(e) => handleDelete(user.id)}
-                                          className="btn btn-danger btn-sm rounded-0"
-                                          type="button"
-                                          data-toggle="tooltip"
-                                          data-placement="top"
-                                          title="Delete"
-                                        >
-                                          <i className="fa fa-trash"></i>
-                                        </button>
-                                      </li>
-                                    </ul>
-                                  </td>
-                                </tr>
-                              );
-                            })}
+                                    <td>
+                                      <ul className="list-inline m-0">
+                                        <li className="list-inline-item">
+                                          <Link
+                                            to={"/user/update/" + user.id}
+                                            className="btn btn-success btn-sm rounded-0"
+                                            type="button"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Edit"
+                                          >
+                                            <i className="fa fa-edit"></i>
+                                          </Link>
+                                        </li>
+                                        <li className="list-inline-item">
+                                          <button
+                                            onClick={(e) =>
+                                              handleDelete(user.id)
+                                            }
+                                            className="btn btn-danger btn-sm rounded-0"
+                                            type="button"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Delete"
+                                          >
+                                            <i className="fa fa-trash"></i>
+                                          </button>
+                                        </li>
+                                      </ul>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                           </tbody>
                         </table>
                       </div>

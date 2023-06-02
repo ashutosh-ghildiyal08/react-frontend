@@ -5,6 +5,13 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 function UpdateLocation() {
+  const navigate = useNavigate();
+  // const { logggedInUserId } = useParams();
+  useEffect(() => {
+    if (sessionStorage.length === 0) {
+      navigate("/");
+    }
+  });
   const [data, setData] = useState([]);
   const { id } = useParams();
   useEffect(() => {
@@ -16,7 +23,7 @@ function UpdateLocation() {
       .catch((err) => console.log(err));
   }, []);
 
-  const navigate = useNavigate();
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(data);

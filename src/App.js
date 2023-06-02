@@ -9,6 +9,7 @@ import AddLocation from "./components/AddLocation";
 import UpdateLocation from "./components/UpdateLocation";
 import AssignUser from "./components/AssignUser";
 import AssignUserList from "./components/AssignUserList";
+import Logout from "./page/Logout";
 function App() {
   return (
     <BrowserRouter>
@@ -16,8 +17,8 @@ function App() {
         <Route path="/" element={<Login />}></Route>
         <Route path="/user" element={<User />}></Route>
         <Route path="/location" element={<Location />}></Route>
-        <Route path="/user/create" element={<AddUser />}></Route>
-        <Route path="/user/update/:id" element={<UpdateUser />}></Route>
+        <Route path="/user/create" Component={AddUser}></Route>
+        <Route path="/user/update/:id" Component={UpdateUser}></Route>
         <Route path="/location" element={<Location />}></Route>
         <Route path="/location/create" Component={AddLocation}></Route>
         <Route path="/location/update/:id" Component={UpdateLocation}></Route>
@@ -29,6 +30,7 @@ function App() {
           path="/location/:locationId/users"
           Component={AssignUserList}
         ></Route>
+        <Route path="/logout" element={<Logout />}></Route>
       </Routes>
     </BrowserRouter>
   );

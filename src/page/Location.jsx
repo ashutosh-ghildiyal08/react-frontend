@@ -4,9 +4,16 @@ import "../css/content.css";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Location() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (sessionStorage.length === 0) {
+      navigate("/");
+    }
+  });
+
   const [locationData, setLocationData] = useState([]);
   useEffect(() => {
     const locationListRes = async () => {

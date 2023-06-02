@@ -9,16 +9,17 @@ function AssignUser() {
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     const userListRes = async () => {
-      await axios
-        .get("http://localhost:8081/users")
-        .then((response) => setUserData(response.data));
+      await axios.get("http://localhost:8081/users").then((response) => {
+        setUserData(response.data);
+      });
     };
     userListRes();
   }, []);
   const { locationId } = useParams();
   const navigate = useNavigate();
   const handleAssignUser = (userId) => {
-    const url = "http://localhost:8081/location/" + locationId + "/" + userId;
+    const url =
+      "http://localhost:8081/location/assign/" + locationId + "/" + userId;
     axios
       .post(url)
       .then((res) => {
@@ -37,7 +38,9 @@ function AssignUser() {
     const userListRes = async () => {
       await axios
         .get("http://localhost:8081/location/" + locationId + "/users")
-        .then((response) => setassignedUserData(response.data))
+        .then((response) => {
+          setassignedUserData(response.data);
+        })
         .catch((error) => {
           navigate("/location");
           alert("Something went wrong!");
@@ -45,7 +48,14 @@ function AssignUser() {
     };
     userListRes();
   }, []);
-  
+
+  var handleRender = (userId) => {
+    var isEqual = false;
+    assignedUserData.forEach((element) => {
+      if (element.id === userId) isEqual = true;
+    });
+    return isEqual;
+  };
 
   return (
     <div className="wrapper d-flex align-items-stretch">
@@ -80,7 +90,11 @@ function AssignUser() {
                                   <td>{user.email}</td>
 
                                   <td>
-                                   
+                                    {handleRender(user.id) === true ? (
+                                      <span className="text-success font-weight-bold">
+                                        Assigned
+                                      </span>
+                                    ) : (
                                       <button
                                         onClick={(e) =>
                                           handleAssignUser(user.id)
@@ -93,7 +107,7 @@ function AssignUser() {
                                       >
                                         <i className="fa fa-plus"></i>
                                       </button>
-                                  
+                                    )}
                                   </td>
                                 </tr>
                               );

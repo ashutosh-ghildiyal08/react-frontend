@@ -15,12 +15,29 @@ function AssignUserList() {
         .get("http://localhost:8081/location/" + locationId + "/users")
         .then((response) => setUserData(response.data))
         .catch((error) => {
-          navigate("/location");
           alert("Something went wrong!");
+          navigate("/location");
         });
     };
     userListRes();
   }, []);
+  const handleUnAssignUser = (userId) => {
+    axios
+      .post(
+        "http://localhost:8081/location/unAssign/" + locationId + "/" + userId
+      )
+      .then((res) => {
+        console.log(res.status);
+        if (res.status === 201) {
+          alert("Unassignment Successfull");
+          window.location.reload(true);
+        }
+      })
+      .catch((error) => {
+        navigate("/location");
+        alert("Something went wrong!");
+      });
+  };
   return (
     <div className="wrapper d-flex align-items-stretch">
       <Sidebar />
@@ -52,6 +69,20 @@ function AssignUserList() {
                                 <tr key={index}>
                                   <td>{user.id}</td>
                                   <td>{user.email}</td>
+                                  <td>
+                                    <button
+                                      onClick={(e) =>
+                                        handleUnAssignUser(user.id)
+                                      }
+                                      className="btn btn-danger btn-sm rounded-0"
+                                      type="button"
+                                      data-toggle="tooltip"
+                                      data-placement="top"
+                                      title="Unassign User"
+                                    >
+                                      <i className="fa fa-minus"></i>
+                                    </button>
+                                  </td>
                                 </tr>
                               );
                             })}

@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/addLocation.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function AddLocation() {
+  const navigate = useNavigate();
+  // const { logggedInUserId } = useParams();
+  useEffect(() => {
+    if (sessionStorage.length === 0) {
+      navigate("/");
+    }
+  });
   const [data, setData] = useState({
     locName: "",
     locCode: "",
   });
-  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     axios

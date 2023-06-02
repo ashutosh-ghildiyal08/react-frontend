@@ -5,6 +5,14 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 function UpdateUser() {
+  const navigate = useNavigate();
+  // const { logggedInUserId } = useParams();
+  useEffect(() => {
+    if (sessionStorage.length === 0) {
+      navigate("/");
+    }
+  });
+  const [error, setError] = useState([]);
   const [data, setData] = useState([]);
   const { id } = useParams();
   useEffect(() => {
@@ -16,13 +24,21 @@ function UpdateUser() {
       .catch((err) => console.log(err));
   }, []);
 
-  const navigate = useNavigate();
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(data);
-    axios.put("http://localhost:8080/users", data).then((res) => {
-      navigate("/user");
-    });
+    axios
+      .put("http://localhost:8080/users", data)
+      .then((res) => {
+        navigate("/user");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          console.log(error.response.data);
+          setError(error.response.data);
+        }
+      });
   };
 
   return (
@@ -40,14 +56,15 @@ function UpdateUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.email}
+                        </span>
                         <input
                           type="email"
                           value={data.email}
                           id="email"
                           className="form-control form-control-lg"
-                          onChange={(e) =>
-                            setData({ ...data, email: e.target.value })
-                          }
+                          readonly="readonly"
                         />
                         <label className="form-label" for="email">
                           Email
@@ -75,6 +92,9 @@ function UpdateUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.firstName}
+                        </span>
                         <input
                           type="text"
                           value={data.firstName}
@@ -91,6 +111,9 @@ function UpdateUser() {
                     </div>
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.lastName}
+                        </span>
                         <input
                           type="text"
                           value={data.lastName}
@@ -109,6 +132,9 @@ function UpdateUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.addressLine1}
+                        </span>
                         <input
                           type="text"
                           value={data.addressLine1}
@@ -128,6 +154,9 @@ function UpdateUser() {
                     </div>
                     <div className="col-md-6 mb-4">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.addressLine2}
+                        </span>
                         <input
                           type="text"
                           value={data.addressLine2}
@@ -149,6 +178,9 @@ function UpdateUser() {
                   <div className="row">
                     <div className="col-md-6 mb-4 pb-2">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.city}
+                        </span>
                         <input
                           type="city"
                           value={data.city}
@@ -165,6 +197,9 @@ function UpdateUser() {
                     </div>
                     <div className="col-md-6 mb-4 pb-2">
                       <div className="form-outline">
+                        <span className="font-weight-bold  text-warning">
+                          {error && error.country}
+                        </span>
                         <input
                           type="text"
                           value={data.country}
