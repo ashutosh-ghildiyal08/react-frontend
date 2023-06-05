@@ -29,7 +29,6 @@ function Sidebar() {
           Logout
         </Link>
       </div>
-      
     </nav>
   );
 }
